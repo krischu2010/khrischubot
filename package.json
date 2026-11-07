@@ -1,0 +1,10 @@
+{
+  "name": "krischubot",
+  "version": "1.0.0",
+  "description": "KRISCHU BOT - Auto Respon DDI",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

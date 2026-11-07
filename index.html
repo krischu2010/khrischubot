@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KRISCHU BOT - DDI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#FFFFFF;color:#111;padding:16px}
+.top{background:linear-gradient(135deg,#4C1D95,#7C3AED,#A855F7);color:white;padding:22px;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(124,58,237,.35)}
+.top h1{font-size:28px;font-weight:800;letter-spacing:1.5px}
+.top p{font-size:13px;opacity:.95}
+.card{background:#FFF;border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 4px 18px rgba(0,0,0,.07);border:1px solid #E9D5FF}
+.hidden{display:none}
+input,select,textarea{width:100%;padding:12px;border:2px solid #E9D5FF;border-radius:12px;margin-top:8px;font-size:14px;outline:none;background:#FBF7FF;color:#111}
+input:focus{border-color:#7C3AED}
+button{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:10px}
+.btn-ungu{background:linear-gradient(135deg,#4C1D95,#7C3AED);color:white}
+.btn-putih{background:white;color:#4C1D95;border:2px solid #7C3AED}
+.btn-hitam{background:#111;color:white}
+.menu{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+.menu button{padding:16px 5px;font-size:12px}
+.active{outline:3px solid #7C3AED}
+.label{font-size:12px;font-weight:700;color:#6D28D9;margin-top:12px;display:block}
+.small{font-size:12px;color:#555;margin-top:6px}
+.preview{background:#FAF5FF;border:2px dashed #A855F7;border-radius:12px;padding:12px;margin-top:10px;white-space:pre-wrap;font-size:13px;color:#111}
+.tag{display:inline-block;background:#F3E8FF;color:#4C1D95;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;margin:3px 3px 0 0;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="top"><h1>KRISCHU BOT</h1><p>Auto Respon Web Milik DDI Sendiri • Tanpa Batas • Online Terus</p><div id="statusTop" class="small" style="color:white">Belum Login</div></div>
+<div id="pageLogin" class="card"><h2>🔐 Login Khusus DDI</h2><p class="small">Hanya orang DDI yang bisa masuk.</p><span class="label">Username</span><input id="user" value="admin-ddi"><span class="label">Password DDI</span><input id="pass" type="password" placeholder="Masukkan password DDI"><button class="btn-ungu" onclick="login()">MASUK KE KRISCHU BOT</button><div id="loginMsg" class="small"></div></div>
+<div id="pageDash" class="hidden">
+<div class="menu"><button class="btn-putih" id="btnPairing" onclick="show('pairing')">📱<br>PAIRING</button><button class="btn-putih" id="btnAuto" onclick="show('auto')">💬<br>AUTO RESPON</button><button class="btn-putih" id="btnAturan" onclick="show('aturan')">⚙️<br>ATURAN BOT</button></div>
+<div id="box-pairing" class="card"><h3>📱 Pairing Nomor WA</h3><span class="label">Nomor WA Bot (628xxx)</span><input id="nomorBot" placeholder="6281234567890"><button class="btn-ungu" onclick="mintaKode()">MINTA KODE PAIRING</button><div id="kodeBox" class="preview hidden"></div></div>
+<div id="box-auto" class="card hidden"><h3>💬 Auto Respon - Keyword Tanpa Batas</h3><span class="label">Keyword</span><input id="kw" placeholder="contoh: harga / anjing / google"><span class="label">Mode</span><select id="mode"><option value="pas">Pas Persis</option><option value="mengandung">Mengandung Kata</option><option value="awalan">Awalan (!absen Budi)</option></select><span class="label">Balasan</span><textarea id="balas" rows="3" placeholder="Halo {nama}, hari ini {hari} {tanggal_lengkap} jam {jam}"></textarea><span class="label">Sisipkan Variabel - Tinggal Klik</span><div><span class="tag" onclick="sisip('{nama}')">{nama}</span><span class="tag" onclick="sisip('{nomor}')">{nomor}</span><span class="tag" onclick="sisip('{sapaan}')">{sapaan}</span><span class="tag" onclick="sisip('{jam}')">{jam}</span><span class="tag" onclick="sisip('{hari}')">{hari}</span><span class="tag" onclick="sisip('{tanggal_lengkap}')">{tanggal_lengkap}</span><span class="tag" onclick="sisip('{tahun}')">{tahun}</span><span class="tag" onclick="sisip('{random}')">{random}</span><span class="tag" onclick="sisip('{nama_grup}')">{nama_grup}</span><span class="tag" onclick="sisip('{nama_bot}')">{nama_bot}</span></div><span class="label">Tambah Link / Cari Dari Internet</span><select id="sumber"><option value="">Tidak pakai link</option><option value="Wikipedia">Wikipedia</option><option value="DuckDuckGo">DuckDuckGo (kayak Google)</option><option value="Link Manual">Link Manual</option></select><button class="btn-ungu" onclick="tambahAturan()">+ SIMPAN ATURAN</button><div id="listAturan"></div><hr style="margin:14px 0;border:1px dashed #D8B4FE"><h3>🧪 Uji Aturan / Demo</h3><span class="label">Coba Ketik Chat Pura-pura</span><input id="ujiChat" placeholder="contoh: eh anjing lu dimana"><span class="label">Nama Pura-pura</span><input id="ujiNama" value="Budi"><button class="btn-hitam" onclick="uji()">UJI SEKARANG</button><div id="hasilUji" class="preview">Belum diuji.</div></div>
+<div id="box-aturan" class="card hidden"><h3>⚙️ Aturan Bot</h3><span class="label">Nama Bot / Identitas</span><input id="namaBot" value="Bot DDI" oninput="updatePreview()"><span class="label">Header - Atas</span><textarea id="header" rows="2" oninput="updatePreview()">🤖 *BOT DDI*
+━━━━━━━━━━</textarea><span class="label">Footer / Tanda Tangan - Bawah</span><textarea id="footer" rows="3" oninput="updatePreview()">━━━━━━━━━━
+© DDI - Dewan Admin
+Admin Jaga: Khrisna</textarea><span class="label">Nomor Yang Boleh Dibalas</span><input id="whiteNomor" value="6281234567890, 6281345678901"><span class="label">Link Grup Yang Boleh Dibalas</span><input id="whiteGrup" value="https://chat.whatsapp.com/DDI-Pusat"><span class="label">Preview:</span><div id="previewFull" class="preview"></div></div>
+</div>
+<script>
+let aturan=[];
+function login(){
+ if(document.getElementById('user').value==='admin-ddi' && document.getElementById('pass').value==='DDI-2026'){
+  document.getElementById('pageLogin').classList.add('hidden');
+  document.getElementById('pageDash').classList.remove('hidden');
+  document.getElementById('statusTop').innerText='Login Berhasil • Halo Admin DDI ✅';
+  show('pairing'); updatePreview();
+ } else { document.getElementById('loginMsg').innerText='❌ Password salah.'; }
+}
+function show(p){
+ ['pairing','auto','aturan'].forEach(x=>{
+  document.getElementById('box-'+x).classList.add('hidden');
+  document.getElementById('btn'+(x==='pairing'?'Pairing':x==='auto'?'Auto':'Aturan')).classList.remove('active');
+ });
+ document.getElementById('box-'+p).classList.remove('hidden');
+ document.getElementById('btn'+(p==='pairing'?'Pairing':p==='auto'?'Auto':'Aturan')).classList.add('active');
+}
+function mintaKode(){
+ let n=document.getElementById('nomorBot').value||'628xxx';
+ let kode=Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+ document.getElementById('kodeBox').classList.remove('hidden');
+ document.getElementById('kodeBox').innerText='Nomor: '+n+'\nKODE PAIRING: '+kode;
+}
+function sisip(v){ let t=document.getElementById('balas'); t.value+=v; t.focus(); }
+function tambahAturan(){
+ let kw=document.getElementById('kw').value.trim();
+ let balas=document.getElementById('balas').value.trim();
+ if(!kw||!balas) return alert('Isi keyword dan balasan dulu');
+ aturan.push({kw:kw.toLowerCase(),mode:document.getElementById('mode').value,balas:balas,sumber:document.getElementById('sumber').value});
+ render(); document.getElementById('kw').value=''; document.getElementById('balas').value='';
+}
+function render(){
+ let h=aturan.map((a,i)=>'<div class="preview">['+(i+1)+'] Keyword: <b>'+a.kw+'</b> | Mode: '+a.mode+' | Sumber: '+(a.sumber||'Teks')+'<br>Balasan: '+a.balas+'</div>').join('');
+ document.getElementById('listAturan').innerHTML=h||'<p class="small">Belum ada aturan.</p>';
+}
+function gantiVar(teks,nama){
+ let now=new Date();
+ let jam=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+ let hari=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][now.getDay()];
+ let bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][now.getMonth()];
+ let sapaan=now.getHours()<11?'Selamat Pagi':now.getHours()<15?'Selamat Siang':now.getHours()<18?'Selamat Sore':'Selamat Malam';
+ return teks.replaceAll('{nama}',nama).replaceAll('{nomor}','62812xxx').replaceAll('{sapaan}',sapaan).replaceAll('{jam}',jam).replaceAll('{hari}',hari).replaceAll('{tanggal_lengkap}',hari+', '+now.getDate()+' '+bulan+' '+now.getFullYear()).replaceAll('{tahun}',now.getFullYear()).replaceAll('{random}',Math.floor(Math.random()*100)+1).replaceAll('{nama_grup}','Grup DDI').replaceAll('{nama_bot}',document.getElementById('namaBot').value);
+}
+function uji(){
+ let chat=document.getElementById('ujiChat').value.toLowerCase();
+ let nama=document.getElementById('ujiNama').value||'Budi';
+ let ketemu=aturan.find(a=> a.mode==='pas' ? chat===a.kw : a.mode==='mengandung' ? chat.includes(a.kw) : chat.startsWith(a.kw));
+ if(!ketemu){ document.getElementById('hasilUji').innerText='Gak ada keyword yang cocok. Bot DIEM aja.'; return; }
+ let isi=gantiVar(ketemu.balas,nama);
+ let sumberTxt=ketemu.sumber ? '\n\n🔍 Sumber: '+ketemu.sumber+' + Link' : '';
+ document.getElementById('hasilUji').innerText='KETEMU! Keyword: '+ketemu.kw+' ✅\n\n'+document.getElementById('header').value+'\n'+isi+sumberTxt+'\n'+document.getElementById('footer').value;
+}
+function updatePreview(){ document.getElementById('previewFull').innerText=document.getElementById('header').value+'\nHalo {nama}, ini isi tengah...\n'+document.getElementById('footer').value; }
+render(); updatePreview();
+</script>
+</body>
+</html>
